@@ -1,7 +1,6 @@
-#[derive(Copy, Clone, Debug, Default)]
+#[derive(Copy, Clone, Debug, Default, PartialEq, PartialOrd, Ord, Eq)]
 pub enum Rank {
     #[default]
-    Ace = 0,
     Two,
     Three,
     Four,
@@ -14,10 +13,10 @@ pub enum Rank {
     Jack,
     Queen,
     King,
+    Ace,
 }
 
 pub const RANKS: [Rank; 13] = [
-    Rank::Ace,
     Rank::Two,
     Rank::Three,
     Rank::Four,
@@ -30,4 +29,5 @@ pub const RANKS: [Rank; 13] = [
     Rank::Jack,
     Rank::Queen,
     Rank::King,
+    Rank::Ace,
 ];

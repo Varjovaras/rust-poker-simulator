@@ -20,7 +20,6 @@ impl Deck {
                 cards.push(Card::new(*suit, *value));
             });
         }
-
         if cards.len() != 52 {
             panic!("Deck should have 52 cards");
         }
