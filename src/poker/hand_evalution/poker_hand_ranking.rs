@@ -23,11 +23,35 @@ impl PokerHandRanking {
 
         if is_flush && is_straight && straight_is_flush(cards, &values_array) {
             let index = get_index_where_straight_starts(&values_array).unwrap();
-            if index == 10 {
-                return PokerHandRanking::RoyalFlush;
+            return if index == 10 {
+                PokerHandRanking::RoyalFlush
             } else {
-                return PokerHandRanking::StraightFlush;
-            }
+                PokerHandRanking::StraightFlush
+            };
+        }
+        if is_four_of_a_kind(&values_array) {
+            return PokerHandRanking::FourOfAKind;
+        }
+        if is_full_house(&values_array) {
+            return PokerHandRanking::FullHouse;
+        }
+        if is_flush {
+            return PokerHandRanking::Flush;
+        }
+        if is_straight {
+            return PokerHandRanking::Straight;
+        }
+
+        if is_three_of_kind(&values_array) {
+            return PokerHandRanking::ThreeOfAKind;
+        }
+
+        if is_two_pair(&values_array) {
+            return PokerHandRanking::TwoPair;
+        }
+
+        if is_pair(&values_array) {
+            return PokerHandRanking::Pair;
         }
 
         PokerHandRanking::HighCard
@@ -65,7 +89,7 @@ fn hand_values_as_array(cards: &[Card]) -> [u8; 14] {
 
 fn hand_is_straight(values: &[u8; 14]) -> bool {
     let mut counter = 0;
-    for value in values.iter() {
+    for value in values[..10].iter() {
         if *value != 0 {
             counter += 1;
         } else {
@@ -83,7 +107,7 @@ fn get_index_where_straight_starts(values: &[u8; 14]) -> Option<u8> {
         panic!("This should never be called for any reason, because it should already be checked it contains straight!")
     }
     let mut counter = 0;
-    for (i, value) in values.iter().enumerate() {
+    for (i, value) in values[..10].iter().enumerate() {
         if *value != 0 {
             counter += 1;
         } else {
@@ -123,4 +147,16 @@ fn is_four_of_a_kind(values: &[u8; 14]) -> bool {
 //triplet bigger than pair if both are full house
 fn is_full_house(values: &[u8; 14]) -> bool {
     values.contains(&3) && values.contains(&2)
+}
+
+fn is_three_of_kind(values: &[u8; 14]) -> bool {
+    values.contains(&3)
+}
+
+fn is_two_pair(values: &[u8; 14]) -> bool {
+    values.iter().filter(|&value| *value == 2).count() == 2
+}
+
+fn is_pair(values: &[u8; 14]) -> bool {
+    values.contains(&2)
 }
