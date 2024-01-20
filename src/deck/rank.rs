@@ -19,21 +19,22 @@ pub enum Rank {
 }
 
 impl Rank {
-    pub fn _from_str(rank: &str) -> Option<Rank> {
+    #[must_use]
+    pub fn _from_str(rank: &str) -> Option<Self> {
         match rank {
-            "Two" => Some(Rank::Two),
-            "Three" => Some(Rank::Three),
-            "Four" => Some(Rank::Four),
-            "Five" => Some(Rank::Five),
-            "Six" => Some(Rank::Six),
-            "Seven" => Some(Rank::Seven),
-            "Eight" => Some(Rank::Eight),
-            "Nine" => Some(Rank::Nine),
-            "Ten" => Some(Rank::Ten),
-            "Jack" => Some(Rank::Jack),
-            "Queen" => Some(Rank::Queen),
-            "King" => Some(Rank::King),
-            "Ace" => Some(Rank::Ace),
+            "Two" => Some(Self::Two),
+            "Three" => Some(Self::Three),
+            "Four" => Some(Self::Four),
+            "Five" => Some(Self::Five),
+            "Six" => Some(Self::Six),
+            "Seven" => Some(Self::Seven),
+            "Eight" => Some(Self::Eight),
+            "Nine" => Some(Self::Nine),
+            "Ten" => Some(Self::Ten),
+            "Jack" => Some(Self::Jack),
+            "Queen" => Some(Self::Queen),
+            "King" => Some(Self::King),
+            "Ace" => Some(Self::Ace),
             _ => None,
         }
     }
@@ -42,19 +43,19 @@ impl Rank {
 impl fmt::Display for Rank {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Rank::Two => write!(f, "Two"),
-            Rank::Three => write!(f, "Three"),
-            Rank::Four => write!(f, "Four"),
-            Rank::Five => write!(f, "Five"),
-            Rank::Six => write!(f, "Six"),
-            Rank::Seven => write!(f, "Seven"),
-            Rank::Eight => write!(f, "Eight"),
-            Rank::Nine => write!(f, "Nine"),
-            Rank::Ten => write!(f, "Ten"),
-            Rank::Jack => write!(f, "Jack"),
-            Rank::Queen => write!(f, "Queen"),
-            Rank::King => write!(f, "King"),
-            Rank::Ace => write!(f, "Ace"),
+            Self::Two => write!(f, "Two"),
+            Self::Three => write!(f, "Three"),
+            Self::Four => write!(f, "Four"),
+            Self::Five => write!(f, "Five"),
+            Self::Six => write!(f, "Six"),
+            Self::Seven => write!(f, "Seven"),
+            Self::Eight => write!(f, "Eight"),
+            Self::Nine => write!(f, "Nine"),
+            Self::Ten => write!(f, "Ten"),
+            Self::Jack => write!(f, "Jack"),
+            Self::Queen => write!(f, "Queen"),
+            Self::King => write!(f, "King"),
+            Self::Ace => write!(f, "Ace"),
         }
     }
 }

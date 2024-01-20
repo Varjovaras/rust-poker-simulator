@@ -1,5 +1,5 @@
 use std::fmt;
-#[derive(Copy, Clone, Debug, Default, PartialEq)]
+#[derive(Copy, Clone, Debug, Default, PartialEq, Eq)]
 pub enum Suit {
     Heart,
     Diamond,
@@ -9,12 +9,13 @@ pub enum Suit {
 }
 
 impl Suit {
-    pub fn _from_str(suit: &str) -> Option<Suit> {
+    #[must_use]
+    pub fn _from_str(suit: &str) -> Option<Self> {
         match suit {
-            "Heart" => Some(Suit::Heart),
-            "Diamond" => Some(Suit::Diamond),
-            "Club" => Some(Suit::Club),
-            "Spade" => Some(Suit::Spade),
+            "Heart" => Some(Self::Heart),
+            "Diamond" => Some(Self::Diamond),
+            "Club" => Some(Self::Club),
+            "Spade" => Some(Self::Spade),
             _ => None,
         }
     }
@@ -23,10 +24,10 @@ impl Suit {
 impl fmt::Display for Suit {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Suit::Heart => write!(f, "Heart"),
-            Suit::Diamond => write!(f, "Diamond"),
-            Suit::Club => write!(f, "Club"),
-            Suit::Spade => write!(f, "Spade"),
+            Self::Heart => write!(f, "Heart"),
+            Self::Diamond => write!(f, "Diamond"),
+            Self::Club => write!(f, "Club"),
+            Self::Spade => write!(f, "Spade"),
         }
     }
 }

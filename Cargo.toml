@@ -13,3 +13,4 @@ opt-level = 3
 
 [dependencies]
 rand = "0.8.5"
+bytecount = "0.6.7"

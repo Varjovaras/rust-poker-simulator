@@ -7,14 +7,16 @@ pub struct Poker {
 }
 
 impl Poker {
-    pub fn new(hand_size: u8) -> Poker {
+    #[must_use]
+    pub fn new(hand_size: u8) -> Self {
         let deck = Deck::new();
-        Poker { deck, hand_size }
+        Self { deck, hand_size }
     }
 
-    pub fn new_texas_hold_em() -> Poker {
+    #[must_use]
+    pub fn new_texas_hold_em() -> Self {
         let deck = Deck::new();
-        Poker { deck, hand_size: 2 }
+        Self { deck, hand_size: 2 }
     }
 
     pub fn shuffle(&mut self) {

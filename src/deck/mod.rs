@@ -12,18 +12,22 @@ pub struct Deck {
 }
 
 impl Deck {
-    pub fn new() -> Deck {
+    #[must_use]
+    /// Creates a new deck of cards.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the deck does not have exactly 52 cards.
+    pub fn new() -> Self {
         let mut cards = Vec::new();
 
         for suit in &SUITS {
-            RANKS.iter().for_each(|value| {
+            for value in &RANKS {
                 cards.push(Card::new(*suit, *value));
-            });
+            }
         }
-        if cards.len() != 52 {
-            panic!("Deck should have 52 cards");
-        }
-        Deck { cards }
+        assert!(cards.len() == 52, "Deck should have 52 cards");
+        Self { cards }
     }
 
     pub fn shuffle(&mut self) {
