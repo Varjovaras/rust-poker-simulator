@@ -4,12 +4,12 @@ use self::poker_hand_ranking::PokerHandRanking;
 pub mod poker_hand_ranking;
 
 #[derive(Debug)]
-pub struct HandEvalution {
+pub struct Hand {
     pub high_card: Card,
     pub hand_value: PokerHandRanking,
 }
 
-impl HandEvalution {
+impl Hand {
     #[must_use]
     /// Creates a new `HandEvalution` instance.
     ///

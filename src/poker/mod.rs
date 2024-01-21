@@ -1,5 +1,5 @@
 use crate::deck::Deck;
-pub mod hand_evalution;
+pub mod hand;
 
 pub struct Poker {
     pub deck: Deck,
