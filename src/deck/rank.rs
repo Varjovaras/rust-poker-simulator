@@ -1,9 +1,14 @@
 use std::fmt;
 
 #[derive(Copy, Clone, Debug, Default, PartialEq, PartialOrd, Ord, Eq)]
+/*
+* Ace is both 0 and 13 because of the way the `Rank` enum is used in the `Hand` struct.
+* So enum starts at Two = 1
+*/
+
 pub enum Rank {
     #[default]
-    Two,
+    Two = 1,
     Three,
     Four,
     Five,
@@ -19,23 +24,40 @@ pub enum Rank {
 }
 
 impl Rank {
-    #[must_use]
-    pub fn _from_str(rank: &str) -> Option<Self> {
+    /// Parses a string representation of a rank and returns the corresponding `Rank` enum variant.
+    ///
+    /// # Arguments
+    ///
+    /// * `rank` - A string representing the rank.
+    ///
+    /// # Errors
+    ///
+    /// Returns an `Err` variant if the input string does not match any valid rank.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use deck::Rank;
+    ///
+    /// let rank = Rank::parse_str("Two");
+    /// assert_eq!(rank, Ok(Rank::Two));
+    /// ```
+    pub fn parse_str(rank: &str) -> Result<Self, String> {
         match rank {
-            "Two" => Some(Self::Two),
-            "Three" => Some(Self::Three),
-            "Four" => Some(Self::Four),
-            "Five" => Some(Self::Five),
-            "Six" => Some(Self::Six),
-            "Seven" => Some(Self::Seven),
-            "Eight" => Some(Self::Eight),
-            "Nine" => Some(Self::Nine),
-            "Ten" => Some(Self::Ten),
-            "Jack" => Some(Self::Jack),
-            "Queen" => Some(Self::Queen),
-            "King" => Some(Self::King),
-            "Ace" => Some(Self::Ace),
-            _ => None,
+            "Two" | "2" => Ok(Self::Two),
+            "Three" | "3" => Ok(Self::Three),
+            "Four" | "4" => Ok(Self::Four),
+            "Five" | "5" => Ok(Self::Five),
+            "Six" | "6" => Ok(Self::Six),
+            "Seven" | "7" => Ok(Self::Seven),
+            "Eight" | "8" => Ok(Self::Eight),
+            "Nine" | "9" => Ok(Self::Nine),
+            "Ten" | "10" => Ok(Self::Ten),
+            "Jack" | "J" => Ok(Self::Jack),
+            "Queen" | "Q" => Ok(Self::Queen),
+            "King" | "K" => Ok(Self::King),
+            "Ace" | "A" => Ok(Self::Ace),
+            _ => Err(format!("Invalid rank: {rank}")),
         }
     }
 }

@@ -9,14 +9,31 @@ pub enum Suit {
 }
 
 impl Suit {
-    #[must_use]
-    pub fn _from_str(suit: &str) -> Option<Self> {
+    /// Parses a string representation of a suit.
+    ///
+    /// # Arguments
+    ///
+    /// * `suit` - A string slice representing the suit.
+    ///
+    /// # Errors
+    ///
+    /// Returns an `Err` variant if the input string does not match any valid suit.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use deck::Suit;
+    ///
+    /// let suit = Suit::parse_str("Heart").unwrap();
+    /// assert_eq!(suit, Suit::Heart);
+    /// ```
+    pub fn parse_str(suit: &str) -> Result<Self, String> {
         match suit {
-            "Heart" => Some(Self::Heart),
-            "Diamond" => Some(Self::Diamond),
-            "Club" => Some(Self::Club),
-            "Spade" => Some(Self::Spade),
-            _ => None,
+            "Heart" | "H" | "h" => Ok(Self::Heart),
+            "Diamond" | "D" | "d" => Ok(Self::Diamond),
+            "Club" | "C" | "c" => Ok(Self::Club),
+            "Spade" | "S" | "s" => Ok(Self::Spade),
+            _ => Err(format!("Invalid suit: {suit}")),
         }
     }
 }
