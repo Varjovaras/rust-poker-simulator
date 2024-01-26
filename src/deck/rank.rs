@@ -5,7 +5,6 @@ use std::fmt;
 * Ace is both 0 and 13 because of the way the `Rank` enum is used in the `Hand` struct.
 * So enum starts at Two = 1
 */
-
 pub enum Rank {
     #[default]
     Two = 1,

@@ -1,22 +1,49 @@
 use crate::deck::Deck;
+
+use self::player::Player;
 pub mod hand;
+pub mod player;
 
 pub struct Poker {
     pub deck: Deck,
     pub hand_size: u8,
+    pub players: Vec<Player>,
+    pub dealer: u8,
+    pub small_blind: u32,
+    pub big_blind: u32,
 }
 
 impl Poker {
     #[must_use]
-    pub fn new(hand_size: u8) -> Self {
+    #[allow(clippy::missing_panics_doc)]
+    pub fn new(hand_size: u8, player_size: u8, _buy_in: u32, big_blind: u32) -> Self {
+        assert!(player_size >= 2, "Poker must have at least two players");
+        assert!(
+            player_size <= 23,
+            "Poker must have at maximum 23 players, because the deck only has 52 cards"
+        );
         let deck = Deck::new();
-        Self { deck, hand_size }
+        Self {
+            deck,
+            hand_size,
+            players: Vec::new(),
+            dealer: 0,
+            small_blind: big_blind / 2,
+            big_blind,
+        }
     }
 
     #[must_use]
-    pub fn new_texas_hold_em() -> Self {
+    pub fn new_texas_hold_em(_player_size: u8, _buy_in: u32, big_blind: u32) -> Self {
         let deck = Deck::new();
-        Self { deck, hand_size: 2 }
+        Self {
+            deck,
+            hand_size: 2,
+            players: Vec::new(),
+            dealer: 0,
+            small_blind: big_blind / 2,
+            big_blind,
+        }
     }
 
     pub fn shuffle(&mut self) {
@@ -35,6 +62,6 @@ impl Poker {
 
 impl Default for Poker {
     fn default() -> Self {
-        Self::new_texas_hold_em()
+        Self::new_texas_hold_em(4, 0, 0)
     }
 }

@@ -11,13 +11,14 @@ pub struct Hand {
 
 impl Hand {
     #[must_use]
-    /// Creates a new `HandEvalution` instance.
-    ///
-    /// # Panics
-    ///
-    /// This function panics if `cards_in_hand` is empty.
+    #[allow(clippy::missing_panics_doc)]
+
     pub fn new(cards_in_hand: &[Card], cards_on_table: &[Card]) -> Self {
-        let high_card = get_highest_card(cards_in_hand).unwrap();
+        assert!(
+            !cards_in_hand.is_empty(),
+            "Hand must have at least one card"
+        );
+        let high_card = get_highest_card(cards_in_hand).expect("Hand must have at least one card");
         let mut hand: Vec<Card> = Vec::from(cards_in_hand);
         hand.extend_from_slice(cards_on_table);
 

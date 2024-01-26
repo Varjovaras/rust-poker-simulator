@@ -17,11 +17,7 @@ pub enum PokerHandRanking {
 
 impl PokerHandRanking {
     #[must_use]
-    /// Creates a new instance of `PokerHandRanking` based on the given `cards`.
-    ///
-    /// # Panics
-    ///
-    /// This function panics if the length of `cards` is less than 5.
+    #[allow(clippy::missing_panics_doc)]
     pub fn new(cards: &[Card]) -> Self {
         assert!(
             cards.len() >= 5,
@@ -41,7 +37,9 @@ impl PokerHandRanking {
         let is_straight = hand_is_straight(values_array);
 
         if is_flush && is_straight && straight_is_flush(cards) {
-            let index = get_index_where_straight_starts(values_array).unwrap();
+            let index = get_index_where_straight_starts(values_array).expect(
+                "This should never be returned for any reason, because it should already be checked that values contains straight!",
+            );
             return if index == 9 {
                 Self::RoyalFlush
             } else {
@@ -158,7 +156,9 @@ fn straight_is_flush(cards: &[Card]) -> bool {
     let mut cards = cards.to_vec();
     cards.sort_by_key(|card| card.value);
     let values = hand_values_as_array(&cards);
-    let straight_start_index = get_index_where_straight_starts(values).unwrap();
+    let straight_start_index = get_index_where_straight_starts(values).expect(
+        "This should never be returned for any reason, because it should already be checked that the cards contain flush and a straight.",
+    );
     let straight_cards: Vec<Card> = cards
         .iter()
         .filter(|card| {
