@@ -1,10 +1,10 @@
 use crate::deck::card::Card;
 
 pub struct Player {
-    hand: Vec<Card>,
-    chips: u32,
-    bet: u32,
-    is_in: bool,
+    pub hand: Vec<Card>,
+    pub chips: u32,
+    pub bet: u32,
+    pub is_in: bool,
 }
 
 impl Player {

@@ -50,7 +50,13 @@ impl Poker {
         self.deck.shuffle();
     }
 
-    pub fn deal(&mut self) -> Option<Card> {
+    pub fn deal_all_players(&mut self) {
+        for _ in 0..self.hand_size {
+            //    let pasa = self.players.iter().
+        }
+    }
+
+    pub fn deal_a_card(&mut self) -> Option<Card> {
         self.deck.cards.pop()
     }
 
@@ -58,10 +64,10 @@ impl Poker {
         self.deck.cards.pop();
     }
 
-    pub fn deal_hand(&mut self) {
-        self.deck.cards.pop();
-        self.deck.cards.pop();
-    }
+    // pub fn deal_hand(&mut self) {
+    //     self.deck.cards.pop();
+    //     self.deck.cards.pop();
+    // }
 }
 
 impl Default for Poker {
