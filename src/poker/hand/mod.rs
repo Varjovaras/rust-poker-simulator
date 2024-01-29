@@ -12,7 +12,6 @@ pub struct Hand {
 impl Hand {
     #[must_use]
     #[allow(clippy::missing_panics_doc)]
-
     pub fn new(cards_in_hand: &[Card], cards_on_table: &[Card]) -> Self {
         assert!(
             !cards_in_hand.is_empty(),

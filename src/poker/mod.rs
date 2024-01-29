@@ -1,4 +1,4 @@
-use crate::deck::Deck;
+use crate::deck::{card::Card, Deck};
 
 use self::player::Player;
 pub mod hand;
@@ -50,7 +50,11 @@ impl Poker {
         self.deck.shuffle();
     }
 
-    pub fn deal(&mut self) {
+    pub fn deal(&mut self) -> Option<Card> {
+        self.deck.cards.pop()
+    }
+
+    pub fn burn_card(&mut self) {
         self.deck.cards.pop();
     }
 
