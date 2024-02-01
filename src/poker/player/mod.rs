@@ -1,5 +1,6 @@
 use crate::deck::card::Card;
 
+#[derive(Debug)]
 pub struct Player {
     pub hand: Vec<Card>,
     pub chips: u32,
@@ -50,5 +51,16 @@ impl Player {
 
     pub fn lose(&mut self) {
         self.chips -= self.bet;
+    }
+}
+
+impl Default for Player {
+    fn default() -> Self {
+        Self {
+            hand: Vec::new(),
+            chips: 100,
+            bet: 0,
+            is_in: true,
+        }
     }
 }

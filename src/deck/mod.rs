@@ -13,11 +13,7 @@ pub struct Deck {
 
 impl Deck {
     #[must_use]
-    /// Creates a new deck of cards.
-    ///
-    /// # Panics
-    ///
-    /// This function will panic if the deck does not have exactly 52 cards.
+    #[allow(clippy::missing_panics_doc)]
     pub fn new() -> Self {
         let mut cards = Vec::new();
 

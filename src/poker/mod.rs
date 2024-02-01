@@ -4,19 +4,50 @@ use self::player::Player;
 pub mod hand;
 pub mod player;
 
+#[derive(Debug)]
+#[allow(dead_code)]
+struct Board {
+    pub players: Vec<Player>,
+    pub dealer: u8,
+    pub big_blind: u32,
+    pub small_blind: u32,
+    pub pot: u32,
+}
+
+impl Board {
+    pub fn new(big_blind: u32) -> Self {
+        Self {
+            players: Vec::new(),
+            dealer: 0,
+            big_blind,
+            small_blind: big_blind / 2,
+            pot: 0,
+        }
+    }
+}
+
+impl Default for Board {
+    fn default() -> Self {
+        Self {
+            players: Vec::new(),
+            dealer: 0,
+            big_blind: 50,
+            small_blind: 25,
+            pot: 0,
+        }
+    }
+}
+
 pub struct Poker {
     pub deck: Deck,
     pub hand_size: u8,
-    pub players: Vec<Player>,
-    pub dealer: u8,
-    pub small_blind: u32,
-    pub big_blind: u32,
+    pub board: Board,
 }
 
 impl Poker {
     #[must_use]
     #[allow(clippy::missing_panics_doc)]
-    pub fn new(hand_size: u8, player_size: u8, _buy_in: u32, big_blind: u32) -> Self {
+    pub fn new(hand_size: u8, player_size: u8, _buy_in: u32) -> Self {
         assert!(player_size >= 2, "Poker must have at least two players");
         assert!(
             player_size <= 23,
@@ -26,23 +57,17 @@ impl Poker {
         Self {
             deck,
             hand_size,
-            players: Vec::new(),
-            dealer: 0,
-            small_blind: big_blind / 2,
-            big_blind,
+            board: Board::default(),
         }
     }
 
     #[must_use]
-    pub fn new_texas_hold_em(_player_size: u8, _buy_in: u32, big_blind: u32) -> Self {
+    pub fn new_texas_hold_em(_player_size: u8, _buy_in: u32) -> Self {
         let deck = Deck::new();
         Self {
             deck,
             hand_size: 2,
-            players: Vec::new(),
-            dealer: 0,
-            small_blind: big_blind / 2,
-            big_blind,
+            board: Board::default(),
         }
     }
 
@@ -51,9 +76,7 @@ impl Poker {
     }
 
     pub fn deal_all_players(&mut self) {
-        for _ in 0..self.hand_size {
-            //    let pasa = self.players.iter().
-        }
+        for _ in 0..self.hand_size {}
     }
 
     pub fn deal_a_card(&mut self) -> Option<Card> {
@@ -72,6 +95,6 @@ impl Poker {
 
 impl Default for Poker {
     fn default() -> Self {
-        Self::new_texas_hold_em(4, 0, 0)
+        Self::new_texas_hold_em(4, 0)
     }
 }
