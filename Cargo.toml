@@ -28,3 +28,4 @@ unwrap_used = "deny"
 rand = "0.8.5"
 bytecount = "0.6.7"
 leptos = { version = "0.6.5", features = ["csr", "nightly"] }
+
