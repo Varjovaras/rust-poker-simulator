@@ -1,8 +1,12 @@
+use leptos::{mount_to_body, view};
+
 use crate::poker::{hand::Hand, Poker};
 pub mod deck;
 pub mod poker;
 
 fn main() {
+    mount_to_body(|| view! { <p>"Hello, world!"</p> });
+
     let mut poker = Poker::new_texas_hold_em(4, 0); // Call
     for i in 0..1_000_000 {
         poker.deck.shuffle();

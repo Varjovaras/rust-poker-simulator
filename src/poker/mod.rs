@@ -6,7 +6,7 @@ pub mod player;
 
 #[derive(Debug)]
 #[allow(dead_code)]
-struct Board {
+pub struct Board {
     pub players: Vec<Player>,
     pub dealer: u8,
     pub big_blind: u32,
@@ -15,6 +15,7 @@ struct Board {
 }
 
 impl Board {
+    #[must_use]
     pub fn new(big_blind: u32) -> Self {
         Self {
             players: Vec::new(),
