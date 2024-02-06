@@ -6,7 +6,7 @@ pub mod deck;
 pub mod poker;
 
 fn main() {
-    console_error_panic_hook::set_once();
+    // console_error_panic_hook::set_once();
     mount_to_body(|| view! { <App/> });
 
     // let mut poker = Poker::new_texas_hold_em(4, 0); // Call
