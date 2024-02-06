@@ -13,6 +13,16 @@ codegen-units = 1 # Reduced to increase optimisations.
 panic = 'abort'   # Abort on panic
 strip = "symbols" # Strip symbols from binary
 
+[profile.wasm-release]
+inherits = "release"
+opt-level = 'z'
+lto = true
+codegen-units = 1
+
+[package.metadata.leptos]
+
+lib-profile-release = "wasm-release"
+
 [lints.rust]
 unsafe_code = "forbid"
 
