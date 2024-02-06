@@ -3,7 +3,7 @@ pub mod frontend;
 pub mod poker;
 
 fn main() {
-    frontend::mount();
+    frontend::mount_body();
 }
 
 //https://book.leptos.dev/view/02_dynamic_attributes.html
