@@ -4,40 +4,32 @@ use self::player::Player;
 pub mod hand;
 pub mod player;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 #[allow(dead_code)]
 pub struct Board {
     pub players: Vec<Player>,
-    pub dealer: u8,
-    pub big_blind: u32,
-    pub small_blind: u32,
-    pub pot: u32,
+    // pub dealer: u8,
+    // pub big_blind: u32,
+    // pub small_blind: u32,
+    // pub pot: u32,
 }
 
 impl Board {
     #[must_use]
-    pub fn new(big_blind: u32) -> Self {
+    pub fn new(players: u8) -> Self {
         Self {
-            players: Vec::new(),
-            dealer: 0,
-            big_blind,
-            small_blind: big_blind / 2,
-            pot: 0,
+            players: (0..players).map(Player::new).collect(),
         }
     }
 }
 
-impl Default for Board {
-    fn default() -> Self {
-        Self {
-            players: Vec::new(),
-            dealer: 0,
-            big_blind: 50,
-            small_blind: 25,
-            pot: 0,
-        }
-    }
-}
+// impl Default for Board {
+//     fn default() -> Self {
+//         Self {
+//             players: Vec::new(),
+//         }
+//     }
+// }
 
 pub struct Poker {
     pub deck: Deck,
@@ -58,17 +50,18 @@ impl Poker {
         Self {
             deck,
             hand_size,
-            board: Board::default(),
+            board: Board::new(player_size),
         }
     }
 
     #[must_use]
-    pub fn new_texas_hold_em(_player_size: u8, _buy_in: u32) -> Self {
-        let deck = Deck::new();
+    pub fn new_texas_hold_em(player_size: u8, _buy_in: u32) -> Self {
+        let mut deck = Deck::new();
+        deck.shuffle();
         Self {
             deck,
             hand_size: 2,
-            board: Board::default(),
+            board: Board::new(player_size),
         }
     }
 
@@ -76,8 +69,15 @@ impl Poker {
         self.deck.shuffle();
     }
 
+    #[allow(clippy::missing_panics_doc)]
     pub fn deal_all_players(&mut self) {
-        for _ in 0..self.hand_size {}
+        for _ in 0..self.hand_size {
+            for player in &mut self.board.players {
+                player
+                    .hand
+                    .push(self.deck.cards.pop().expect("No more cards in the deck"));
+            }
+        }
     }
 
     pub fn deal_a_card(&mut self) -> Option<Card> {
