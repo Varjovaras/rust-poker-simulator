@@ -13,6 +13,10 @@ impl Card {
     pub const fn new(suit: Suit, value: Rank) -> Self {
         Self { suit, value }
     }
+    #[must_use]
+    pub fn to_custom_string(&self) -> String {
+        format!("{}  {}", self.suit, self.value)
+    }
 }
 
 impl fmt::Display for Card {

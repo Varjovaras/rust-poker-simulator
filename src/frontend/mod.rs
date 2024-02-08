@@ -17,16 +17,16 @@ fn App() -> impl IntoView {
     view! {
         <div>
             <h1>{"Poker"}</h1>
-            <TodoList todos=(players, set_players)/>
+            <PlayerHands players=(players, set_players)/>
         </div>
     }
 }
 
 #[component]
-fn TodoList(todos: (ReadSignal<Vec<Player>>, WriteSignal<Vec<Player>>)) -> impl IntoView {
-    let (todo_list_state, set_todo_list_state) = todos;
+fn PlayerHands(players: (ReadSignal<Vec<Player>>, WriteSignal<Vec<Player>>)) -> impl IntoView {
+    let (player_state, set_player_state) = players;
     let my_todos = move || {
-        todo_list_state
+        player_state
             .get()
             .iter()
             .map(|item| (item.id, item.clone()))
@@ -40,9 +40,10 @@ fn TodoList(todos: (ReadSignal<Vec<Player>>, WriteSignal<Vec<Player>>)) -> impl 
                 children=move |item| {
                     view! {
                         <li class="new-todo">
-                            {item.1.get_hand_as_str()} <button class="remove" on:click=move |_| {}>
-                                {" Remove"}
-                            </button>
+                            {item.1.get_hand_as_str()}
+                        // <button class="remove" on:click=move |_| {}>
+                        // {" Remove"}
+                        // </button>
                         </li>
                     }
                 }

@@ -35,9 +35,10 @@ impl Player {
     pub fn get_hand_as_str(&self) -> String {
         let mut hand_str = String::new();
         for card in &self.hand {
-            hand_str.push_str(&card.to_string());
+            hand_str.push_str(&card.to_custom_string());
+            hand_str.push_str(" | "); // Add a separator between cards
         }
-        hand_str
+        hand_str.trim_end_matches(" | ").to_string() // Remove trailing separator
     }
 
     // pub fn fold(&mut self) {
