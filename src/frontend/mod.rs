@@ -3,30 +3,41 @@ use leptos::*;
 use wasm_bindgen::prelude::*;
 use web_sys;
 
-use crate::{
-    deck::Deck,
-    poker::{player::Player, Poker},
-};
+use crate::poker::{player::Player, Poker};
 
 #[component]
 fn App() -> impl IntoView {
-    let mut poker = Poker::new_texas_hold_em(4, 0);
-    poker.shuffle();
-    poker.deal_all_players();
-    let (players, set_players) = create_signal(poker.board.players);
+    let poker = Poker::new_texas_hold_em(4, 0);
+    let (poker_state, set_poker_state) = create_signal(poker);
+
+    set_poker_state.update(|poker| {
+        poker.shuffle();
+        poker.deal_all_players();
+    });
+
+    let (players, set_players) = create_signal(poker_state.get().board.players);
     view! {
         <div>
             <h1>{"Poker"}</h1>
-            <TodoList todos=(players, set_players)/>
+            <PokerTable players=(players, set_players)/>
+
+            <button on:click=move |_| {
+                let mut new_players = players.get();
+                new_players.push(Player::new(5));
+                set_players.set(new_players);
+            }>
+
+                {"new hand"}
+            </button>
         </div>
     }
 }
 
 #[component]
-fn TodoList(todos: (ReadSignal<Vec<Player>>, WriteSignal<Vec<Player>>)) -> impl IntoView {
-    let (todo_list_state, set_todo_list_state) = todos;
-    let my_todos = move || {
-        todo_list_state
+fn PokerTable(players: (ReadSignal<Vec<Player>>, WriteSignal<Vec<Player>>)) -> impl IntoView {
+    let (players_state, set_players_state) = players;
+    let players = move || {
+        players_state
             .get()
             .iter()
             .map(|item| (item.id, item.clone()))
@@ -35,13 +46,19 @@ fn TodoList(todos: (ReadSignal<Vec<Player>>, WriteSignal<Vec<Player>>)) -> impl 
     view! {
         <ul class="todo-list">
             <For
-                each=my_todos
+                each=players
                 key=|todo_key| todo_key.0
                 children=move |item| {
                     view! {
                         <li class="new-todo">
-                            {item.1.get_hand_as_str()} <button class="remove" on:click=move |_| {}>
-                                {" Remove"}
+                            {item.1.get_hand_as_str()}
+                            <button on:click=move |_| {
+                                let mut new_players = players_state.get();
+                                new_players.retain(|x| x.id != item.0);
+                                set_players_state.set(new_players);
+                            }>
+
+                                {"fold"}
                             </button>
                         </li>
                     }
@@ -51,10 +68,6 @@ fn TodoList(todos: (ReadSignal<Vec<Player>>, WriteSignal<Vec<Player>>)) -> impl 
         </ul>
     }
 }
-// #[component]
-// fn PokerTable(players: ReadSignal<Vec<Player>>) -> impl IntoView {
-//     view! {}
-// }
 
 pub fn mount_body() {
     leptos::mount_to_body(App);

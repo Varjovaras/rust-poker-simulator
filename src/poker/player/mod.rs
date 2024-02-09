@@ -1,6 +1,6 @@
 use crate::deck::card::Card;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct Player {
     pub hand: Vec<Card>,
     pub id: u8,
@@ -69,15 +69,15 @@ impl Player {
     // }
 }
 
-impl Default for Player {
-    fn default() -> Self {
-        Self {
-            hand: Vec::new(),
-            id: 0,
-            //     chips: 100,
-            //     bet: 0,
-            //     is_in: true,
-            // }
-        }
-    }
-}
+// impl Default for Player {
+//     fn default() -> Self {
+//         Self {
+//             hand: Vec::new(),
+//             id: 0,
+//             //     chips: 100,
+//             //     bet: 0,
+//             //     is_in: true,
+//             // }
+//         }
+//     }
+// }

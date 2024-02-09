@@ -31,6 +31,7 @@ impl Board {
 //     }
 // }
 
+#[derive(Debug, Clone)]
 pub struct Poker {
     pub deck: Deck,
     pub hand_size: u8,
