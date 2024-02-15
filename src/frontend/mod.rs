@@ -9,28 +9,33 @@ use crate::poker::{player::Player, Poker};
 fn App() -> impl IntoView {
     let poker = Poker::new_texas_hold_em(4, 0);
     let (poker_state, set_poker_state) = create_signal(poker);
+    poker_signal_shuffle(set_poker_state);
+    let (players, set_players) = create_signal(Vec::new());
 
-    set_poker_state.update(|poker| {
-        poker.shuffle();
-        poker.deal_all_players();
-    });
-
-    let (players, set_players) = create_signal(poker_state.get().board.players);
     view! {
         <div>
             <h1>{"Poker"}</h1>
             <PokerTable players=(players, set_players)/>
 
             <button on:click=move |_| {
-                let mut new_players = players.get();
-                new_players.push(Player::new(5));
-                set_players.set(new_players);
+                deal_new_hand(set_poker_state, set_players);
+                console_log("new hand");
             }>
 
                 {"new hand"}
             </button>
         </div>
     }
+}
+
+fn deal_new_hand(set_poker_state: WriteSignal<Poker>, set_players: WriteSignal<Vec<Player>>) {
+    set_poker_state.update(|poker| {
+        poker.new_deck();
+        poker.shuffle();
+        poker.deal_all_players();
+        console_log(poker.board.players[0].get_hand_as_str().as_str());
+        set_players.set(poker.board.players.clone());
+    });
 }
 
 #[component]
@@ -72,8 +77,15 @@ pub fn mount_body() {
 }
 
 #[wasm_bindgen]
-pub fn log_to_console(message: &str) {
+pub fn console_log(message: &str) {
     web_sys::console::log_1(&JsValue::from_str(message));
+}
+
+fn poker_signal_shuffle(set_poker_state: WriteSignal<Poker>) {
+    set_poker_state.update(|poker| {
+        poker.shuffle();
+        poker.deal_all_players();
+    });
 }
 
 // <For each=players key=|state| state.id let:child>

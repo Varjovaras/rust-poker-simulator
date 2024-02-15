@@ -6,6 +6,7 @@ use self::suit::SUITS;
 
 use self::rank::RANKS;
 use rand::seq::SliceRandom;
+use rand::SeedableRng;
 
 #[derive(Debug, Clone)]
 pub struct Deck {
@@ -28,7 +29,7 @@ impl Deck {
     }
 
     pub fn shuffle(&mut self) {
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rngs::StdRng::from_entropy();
         self.cards.shuffle(&mut rng);
     }
 }

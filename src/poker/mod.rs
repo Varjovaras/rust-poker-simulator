@@ -70,6 +70,10 @@ impl Poker {
         self.deck.shuffle();
     }
 
+    pub fn new_deck(&mut self) {
+        self.deck = Deck::new();
+    }
+
     #[allow(clippy::missing_panics_doc)]
     pub fn deal_all_players(&mut self) {
         for _ in 0..self.hand_size {
