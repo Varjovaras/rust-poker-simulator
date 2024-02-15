@@ -48,18 +48,16 @@ fn PokerTable(players: (ReadSignal<Vec<Player>>, WriteSignal<Vec<Player>>)) -> i
             <For
                 each=players
                 key=|todo_key| todo_key.0
-                children=move |item| {
+                children=move |player| {
                     view! {
                         <li class="new-todo">
-                            {item.1.get_hand_as_str()}
+                            <p>{player.1.name.clone()}</p>
+                            {player.1.get_hand_as_str()}
                             <button on:click=move |_| {
                                 let mut new_players = players_state.get();
-                                new_players.retain(|x| x.id != item.0);
+                                new_players.retain(|x| x.id != player.0);
                                 set_players_state.set(new_players);
-                            }>
-
-                                {"fold"}
-                            </button>
+                            }>{"fold"}</button>
                         </li>
                     }
                 }
