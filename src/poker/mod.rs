@@ -31,6 +31,7 @@ impl Board {
 //     }
 // }
 
+#[derive(Debug, Clone)]
 pub struct Poker {
     pub deck: Deck,
     pub hand_size: u8,
@@ -69,8 +70,19 @@ impl Poker {
         self.deck.shuffle();
     }
 
+    pub fn new_deck_and_shuffle(&mut self) {
+        self.deck = Deck::new();
+        self.deck.shuffle();
+    }
+
     #[allow(clippy::missing_panics_doc)]
     pub fn deal_all_players(&mut self) {
+        // Clear all players' hands
+        for player in &mut self.board.players {
+            player.hand.clear();
+        }
+
+        // Deal new cards
         for _ in 0..self.hand_size {
             for player in &mut self.board.players {
                 player

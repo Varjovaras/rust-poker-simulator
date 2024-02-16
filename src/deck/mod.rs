@@ -7,6 +7,7 @@ use self::suit::SUITS;
 use self::rank::RANKS;
 use rand::seq::SliceRandom;
 
+#[derive(Debug, Clone)]
 pub struct Deck {
     pub cards: Vec<Card>,
 }
