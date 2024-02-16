@@ -7,53 +7,62 @@ use crate::poker::{player::Player, Poker};
 
 #[component]
 fn App() -> impl IntoView {
-    let (poker_signal, set_poker_signal) = create_signal(Poker::new_texas_hold_em(4, 0));
-    let mut poker = poker_signal.get();
-    poker.shuffle(); // Change the return type of shuffle to `()`
-    set_poker_signal(poker);
-    poker.deal_all_players();
-    set_poker_signal(poker);
-    let (players, set_players) = create_signal(poker.board.players.clone());
+    let poker = Poker::new_texas_hold_em(4, 0);
+    let (poker_state, set_poker_state) = create_signal(poker);
+    poker_signal_shuffle(set_poker_state);
+    let (players, set_players) = create_signal(Vec::new());
+
     view! {
         <div>
             <h1>{"Poker"}</h1>
-            <PlayerHands players=(players, set_players)/>
+            <PokerTable players=(players, set_players)/>
+
             <button on:click=move |_| {
-                poker.new_deck_and_shuffle();
-                poker.deal_all_players();
-                poker = Poker::new_texas_hold_em(4, 0);
-                set_players(poker.board.players.clone());
-                log_to_console("deal");
-                log_to_console(&poker.board.players[0].get_hand_as_str());
+                deal_new_hand(set_poker_state, set_players);
+                console_log("new hand");
             }>
 
-                {"Deal"}
+                {"new hand"}
             </button>
         </div>
     }
 }
 
+fn deal_new_hand(set_poker_state: WriteSignal<Poker>, set_players: WriteSignal<Vec<Player>>) {
+    set_poker_state.update(|poker| {
+        poker.new_deck();
+        poker.shuffle();
+        poker.deal_all_players();
+        console_log(poker.board.players[0].get_hand_as_str().as_str());
+        set_players.set(poker.board.players.clone());
+    });
+}
+
 #[component]
-fn PlayerHands(players: (ReadSignal<Vec<Player>>, WriteSignal<Vec<Player>>)) -> impl IntoView {
-    let (player_state, _set_player_state) = players;
-    // let my_todos = move || {
-    //     player_state
-    //         .get()
-    //         .iter()
-    //         .map(|item| (item.id, item.clone()))
-    //         .collect::<Vec<_>>()
-    // };
+fn PokerTable(players: (ReadSignal<Vec<Player>>, WriteSignal<Vec<Player>>)) -> impl IntoView {
+    let (players_state, set_players_state) = players;
+    let players = move || {
+        players_state
+            .get()
+            .iter()
+            .map(|item| (item.id, item.clone()))
+            .collect::<Vec<_>>()
+    };
     view! {
         <ul class="todo-list">
             <For
-                each=player_state
-                key=|player| player.id
-                children=move |item| {
+                each=players
+                key=|todo_key| todo_key.0
+                children=move |player| {
                     view! {
                         <li class="new-todo">
-                            // {"shuffle"}
-                            {item.get_hand_as_str()}
-                            <button class="remove" on:click=move |_| {}></button>
+                            <p>{player.1.name.clone()}</p>
+                            {player.1.get_hand_as_str()}
+                            <button on:click=move |_| {
+                                let mut new_players = players_state.get();
+                                new_players.retain(|x| x.id != player.0);
+                                set_players_state.set(new_players);
+                            }>{"fold"}</button>
                         </li>
                     }
                 }
@@ -62,18 +71,21 @@ fn PlayerHands(players: (ReadSignal<Vec<Player>>, WriteSignal<Vec<Player>>)) -> 
         </ul>
     }
 }
-// #[component]
-// fn PokerTable(players: ReadSignal<Vec<Player>>) -> impl IntoView {
-//     view! {}
-// }
 
 pub fn mount_body() {
     leptos::mount_to_body(App);
 }
 
 #[wasm_bindgen]
-pub fn log_to_console(message: &str) {
+pub fn console_log(message: &str) {
     web_sys::console::log_1(&JsValue::from_str(message));
+}
+
+fn poker_signal_shuffle(set_poker_state: WriteSignal<Poker>) {
+    set_poker_state.update(|poker| {
+        poker.shuffle();
+        poker.deal_all_players();
+    });
 }
 
 // <For each=players key=|state| state.id let:child>

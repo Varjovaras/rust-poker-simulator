@@ -1,7 +1,8 @@
 use crate::deck::card::Card;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct Player {
+    pub name: String,
     pub hand: Vec<Card>,
     pub id: u8,
     // pub chips: u32,
@@ -12,9 +13,13 @@ pub struct Player {
 impl Player {
     #[must_use]
     #[allow(clippy::missing_panics_doc)]
-    pub const fn new(id: u8) -> Self {
+    pub fn new(
+        // name: String,
+        id: u8,
+    ) -> Self {
         // assert!(chips > 0, "Player must have at least one chip");
         Self {
+            name: id.to_string(),
             hand: Vec::new(),
             id, // chips,
                 // bet: 0,
@@ -70,15 +75,15 @@ impl Player {
     // }
 }
 
-impl Default for Player {
-    fn default() -> Self {
-        Self {
-            hand: Vec::new(),
-            id: 0,
-            //     chips: 100,
-            //     bet: 0,
-            //     is_in: true,
-            // }
-        }
-    }
-}
+// impl Default for Player {
+//     fn default() -> Self {
+//         Self {
+//             hand: Vec::new(),
+//             id: 0,
+//             //     chips: 100,
+//             //     bet: 0,
+//             //     is_in: true,
+//             // }
+//         }
+//     }
+// }

@@ -70,9 +70,8 @@ impl Poker {
         self.deck.shuffle();
     }
 
-    pub fn new_deck_and_shuffle(&mut self) {
+    pub fn new_deck(&mut self) {
         self.deck = Deck::new();
-        self.deck.shuffle();
     }
 
     #[allow(clippy::missing_panics_doc)]
